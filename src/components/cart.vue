@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="cart">
+      <router-link :to="{name: 'catalog'}">
+        <div class="cart__link_to_catalog">Back to catalog</div>
+      </router-link>
       <h1>Корзина</h1>
+      <h1 v-if="!cart_data.length">В корзине нет товаров</h1>
       <cart-item
         v-for="(item, index) in cart_data"
         :key="item.article"
@@ -37,4 +41,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.cart {
+  &__link_to_catalog {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 16px;
+    border: solid 1px #aeaaaa;
+  }
+}
 </style>
