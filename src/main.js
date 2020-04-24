@@ -5,6 +5,8 @@ import "./assets/styles/styles.scss";
 
 Vue.config.productionTip = false;
 
+export const MOCK = true;
+
 new Vue({
   render: (h) => h(App),
   store,
