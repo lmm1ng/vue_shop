@@ -1,9 +1,9 @@
 <template>
   <div>
+    <router-link :to="{name: 'catalog'}">
+      <div class="cart__link_to_catalog">Back to catalog</div>
+    </router-link>  
     <div class="cart">
-      <router-link :to="{name: 'catalog'}">
-        <div class="cart__link_to_catalog">Back to catalog</div>
-      </router-link>
       <h1>Корзина</h1>
       <h1 v-if="!cart_data.length">В корзине нет товаров</h1>
       <cart-item
@@ -12,6 +12,7 @@
         :cart_item_data="item"
         @deleteFromCart="deleteFromCart(index)"
       />
+      <div class="cart__total-cost">Итого: {{totalCost}}</div>
     </div>
   </div>
 </template>
@@ -36,18 +37,33 @@ export default {
       this.DELETE_FROM_CART(index);
     }
   },
-  computed: {}
+  computed: {
+    totalCost() {
+      let res = 0;
+      for (let item of this.cart_data) {
+        res += item.quantity * item.price;
+      }
+      return res;
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .cart {
+  position: relative;
   &__link_to_catalog {
     position: absolute;
     top: 10px;
     right: 10px;
     padding: 16px;
     border: solid 1px #aeaaaa;
+  }
+  &__total-cost {
+    position: absolute;
+    bottom: -100px;
+    right: 0;
+    font-size: 40px;
   }
 }
 </style>

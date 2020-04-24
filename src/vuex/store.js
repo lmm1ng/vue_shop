@@ -20,7 +20,7 @@ let store = new Vuex.Store({
       if (state.cart.length) {
         let isProductExists = false;
         state.cart.map((el) => {
-          if (el.article == product.article) {
+          if (el.article === product.article) {
             isProductExists = true;
             el.quantity++;
           }
@@ -34,6 +34,20 @@ let store = new Vuex.Store({
     },
     REMOVE_FROM_CART: (state, index) => {
       state.cart.splice(index, 1);
+    },
+    INCREASE_PRODUCT_QUANTITY: (state) => {
+      state.cart.map((el) => {
+        el.quantity++;
+      });
+    },
+    REDUCE_PRODUCT_QUANTITY: (state) => {
+      state.cart.map((el, index) => {
+        if (el.quantity > 0) {
+          el.quantity--;
+        } else {
+          state.cart.splice(index, 1);
+        }
+      });
     },
   },
   actions: {
@@ -53,6 +67,12 @@ let store = new Vuex.Store({
     },
     DELETE_FROM_CART({ commit }, index) {
       commit("REMOVE_FROM_CART", index);
+    },
+    INCREASE_QUANTITY({ commit }) {
+      commit("INCREASE_PRODUCT_QUANTITY");
+    },
+    REDUCE_QUANTITY({ commit }) {
+      commit("REDUCE_PRODUCT_QUANTITY");
     },
   },
   getters: {

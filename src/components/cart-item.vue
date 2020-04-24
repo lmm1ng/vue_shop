@@ -10,12 +10,20 @@
       <p>{{cart_item_data.price}}</p>
       <p>{{cart_item_data.article}}</p>
     </div>
-    <div class="quantity">{{cart_item_data.quantity}}</div>
+    <div class="cart-item__quantity">
+      <div>Количество:</div>
+      <div class="cart-item__quantity__manage">
+        <div class="cart-item__quantity__manage__reduce" v-on:click="reduceQuantity">-</div>
+        {{cart_item_data.quantity}}
+        <div class="cart-item__quantity__manage__increase" v-on:click="increaseQuantity">+</div>
+      </div>
+    </div>
     <button @click="deleteFromCart">Delete</button>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "cart-item",
   props: {
@@ -27,9 +35,16 @@ export default {
     }
   },
   methods: {
-      deleteFromCart() {
-          this.$emit('deleteFromCart');
-      }
+    ...mapActions(["INCREASE_QUANTITY", "REDUCE_QUANTITY"]),
+    increaseQuantity() {
+      this.INCREASE_QUANTITY();
+    },
+    reduceQuantity() {
+      this.REDUCE_QUANTITY();
+    },
+    deleteFromCart() {
+      this.$emit("deleteFromCart");
+    }
   },
   mounted() {
     this.$set(this.cart_item_data, "quantity", "1");
@@ -40,6 +55,8 @@ export default {
 <style lang="scss" scoped>
 .cart-item {
   display: flex;
+  margin-bottom: $margin * 4;
+  margin-top: $margin * 4;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
@@ -49,6 +66,20 @@ export default {
   &__image {
     width: 50px;
     height: 50px;
+  }
+  &__quantity {
+    &__manage {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      &__reduce,
+      &__increase {
+        display: block;
+        margin: 1px;
+        cursor: pointer;
+        font-size: 30px;
+      }
+    }
   }
 }
 </style>
